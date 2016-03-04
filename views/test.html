@@ -1,0 +1,13 @@
+<div id="app">
+    <h1>OSS测试版</h1>
+    <p>
+        <!-- 使用指令 v-link 进行导航。 -->
+        <a v-link="{ path: '/login' }">Go to login</a>
+        <br>
+        <a v-link="{ path: '/home' }">Go to home</a>
+        <br>
+        <a v-link="{ path: '/game-data' }">Go to game data</a>
+    </p>
+    <!-- 路由外链 -->
+    <router-view></router-view>
+</div>

@@ -1,0 +1,23 @@
+<h1>用户管理界面</h1>
+<p>可修改用户</p>
+{{#each myUser}}
+    <div class="users">
+        <div class="row show-grid">
+            <div class="col-xs-12 col-md-3">{{name}}</div>
+            <div class="col-xs-6 col-md-5">{{role_name}}</div>
+            <div class="col-xs-6 col-md-2"><a href="">修改所属角色</a></div>
+            <div class="col-xs-6 col-md-2"><a href="/api/user">删除用户</a></div>
+        </div>
+    </div>
+{{/each}}
+{{#if has_other}}
+    <p>拥有多游限的用户</p>
+    {{#each otherUser}}
+        <div class="users">
+            <div class="row show-grid">
+                <div class="col-xs-12 col-md-3">{{name}}</div>
+                <div class="col-xs-6 col-md-5">{{role_name}}</div>
+            </div>
+        </div>
+    {{/each}}
+{{/if}}
