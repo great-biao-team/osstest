@@ -2,6 +2,8 @@ var Game = require('./extGame');
 var Menu = require('./extMenu');
 var Platform = require('./extPlatform');
 var Role = require('./extRole');
+var ServerList = require('./extServerList');
+var ChannelList = require('./extChannelList');
 
 var async = require('async');
 
@@ -43,6 +45,24 @@ exports.init = function(){
                     data.roles = obj;
                     callback(null, data);
                 });
+            },
+
+            function(data, callback){
+                ServerList.getAll(function(err, obj){
+                    if(err)
+                        return callback(err, null);
+                    data.serverlist = obj;
+                    callback(null, data);
+                });
+            },
+
+            function(data, callback){
+                ChannelList.getAll(function(err, obj){
+                    if(err)
+                        return callback(err, null);
+                    data.channellist = obj;
+                    callback(null, data);
+                });
             }
         ],function(err, result){
             if(err)
@@ -54,7 +74,7 @@ exports.init = function(){
     );
 };
 
-//×éÖ¯ÍêÕûµÄÈ¨ÏÞ
+//ï¿½ï¿½Ö¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½
 exports.completePrivilege = function(callback){
     var privileges = [];
     for(var i in fieldData.menus){
@@ -78,10 +98,9 @@ exports.completePrivilege = function(callback){
                 }
             }
     }
-    console.log(privileges);
 };
 
-//Êý¾ÝÖÐ£¬Ìí¼ÓÖÐÎÄ×Ö·û´®
+//ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
 exports.addInfo = function(data, callback){
     async.map(data, function(item, callback){
             if(item.game_id && !item.game_name)
@@ -117,4 +136,13 @@ exports.addInfo = function(data, callback){
             callback(result);
         }
     );
+};
+
+exports.getData = function(str, callback){
+    if(fieldData.hasOwnProperty(str)){
+        console.log(fieldData[str]);
+        callback(fieldData[str]);
+    }
+    else
+        callback(null);
 };

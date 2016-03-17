@@ -1,9 +1,12 @@
 var extMysql = require('./../modelExt/extMysql');
 var mysql = require('mysql');
 
-exports.useSql = function(req, res){
-    extMysql.getOneByHostDb(req.params.host, req.params.database, function(err, conParams){
+exports.itemPrepare = function(req, res){
 
+}
+
+exports.useSql = function(req, res){
+    extMysql.getOneByPlatformAndType(req.body.game_platform, req.body.type, function(err, conParams){
         var con = mysql.createConnection(conParams);
         con.query('SELECT 1', function(err, rows) {
             // connected! (unless `err` is set)

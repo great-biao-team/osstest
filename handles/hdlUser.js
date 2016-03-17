@@ -129,6 +129,7 @@ exports.checkUserPassword = function(req, res, next){
 		}
 		else{
 			console.log("verify success name:"+ req.body.name + " password:" + req.body.password);
+			req.session.user = req.body.name;
 			res.json(func.formJsonMsg(1,"验证通过"));
 			next();
 ;		}

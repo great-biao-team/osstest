@@ -12,23 +12,27 @@ var hdlGame = require('./../handles/hdlGame');
 var hdlMenu = require('./../handles/hdlMenu');
 var hdlMySql = require('./../handles/hdlMySql');
 var hdlUseSql = require('./../handles/hdlUseSql');
+var hdlServerList = require('./../handles/hdlServerList');
+var hdlQueryConfig = require('./../handles/hdlQueryConfig');
 
 //页面跳转
 router.get('/', hdlDefault.toLoginPage);
 router.get('/login', hdlDefault.toLoginPage);
 router.get('/home', hdlSession.validSession, hdlDefault.toHomePage);
+router.get('/gamedata/:game_id',hdlSession.validSession, hdlDefault.toGamePage);
+
 
 router.get('/user/:game_id', hdlDefault.toUserPage);
 router.get('/business/:game_id',hdlSession.validSession, hdlDefault.toBusinessPage);
 
-router.get('/gameDetail/:game_id',hdlSession.validSession, hdlDefault.toGamePage);
+
 router.get('/logout',hdlSession.destroy);
 
 router.get('/rolelist',hdlDefault.toRoleListPage);
 router.get('/rolemodify',hdlDefault.toRoleModifyPage);
-router.get('/test', hdlDefault.toTest);
 
 //api
+//后续考虑的api分类：本地数据增删改查使用，直接调用的功能（如使用查询语句）
 //删除、更新操作，全都需要指定唯一的索引
 router.get('/api/user', hdlUser.getAll);
 router.get('/api/user/:name', hdlUser.getByName);
@@ -36,18 +40,22 @@ router.post('/api/user', hdlUser.add);
 router.put('/api/user/:name', hdlUser.update);
 router.delete('/api/user/:name', hdlUser.del);
 router.post('/api/user/check', hdlUser.checkUserPassword, hdlSession.init);
+router.get('/api/test/:game_id/:menu_id', hdlQueryConfig.getInitDataByGameAndMenu);
 
 //这个的链接和前面重了...
 router.get('/api/users/:role_id', hdlUser.getSomeByRoleId);
 
 router.post("/api/check", hdlUser.checkUserPassword, hdlSession.init);
-router.get("/api/gamelist", hdlSession.gamelist);
+router.get("/api/gamelist", hdlSession.validSession, hdlSession.gameList);
+router.get("/api/itemList", hdlSession.validSession, hdlSession.itemList);
 
 router.get('/api/roleprivilege', hdlRolePrivilege.getAll);
 router.get('/api/roleprivilege/:role_id', hdlRolePrivilege.getByRoleId);
 router.post('/api/roleprivilege', hdlRolePrivilege.add);
 router.put('/api/roleprivilege/:role_id/:privilege_id', hdlRolePrivilege.update);
 router.delete('/api/roleprivilege/:role_id/:privilege_id', hdlRolePrivilege.del);
+
+router.get('/api/serverlist/all', hdlServerList.getAll);
 
 router.get('/api/role', hdlRole.getAll);
 router.get('/api/role/:role_id', hdlRole.getByRoleId);
@@ -87,11 +95,8 @@ router.delete('/api/sqlConfig/:host/:database', hdlMySql.del);
 
 router.get('/api/useSql/:host/:database', hdlUseSql.useSql);
 
-router.get('/api/test/:game_id', hdlDefault.test);
+router.get('/api/system/reset_privileges', hdlDefault.resetPrivileges);
 
-//系统功能
-router.get('/api/system/reset_privileges', hdlDefault.resetPrivileges)
 
-router.get('/test', hdlDefault.test);
 
 module.exports = router;

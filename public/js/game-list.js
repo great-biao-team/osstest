@@ -4,13 +4,11 @@ var vm = new Vue({
         games:[]
     },
     ready: function(){
-        console.log("ready");
         //  request
         this.$http({url: '/api/gamelist'
             , method: 'GET'}).then(function (response) {
             if(response.data.flag == 1){
                 this.$data.games = response.data.info.games;
-                console.log(response.data.info.games);
             }
             else{
             }
@@ -18,5 +16,3 @@ var vm = new Vue({
         });
     }
 });
-
-//console.log(vm.games);

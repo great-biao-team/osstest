@@ -51,7 +51,6 @@ exports.formPath = function(role_id, callback){
 			},
 
 			//reorgnize
-
 			function(data, callback){
 				//var data = [{"game_platform":100000,"menu_id":1},{"game_platform":200001,"menu_id":2}
 				//,{"game_platform":200002,"menu_id":2},{"game_platform":300001,"menu_id":1}

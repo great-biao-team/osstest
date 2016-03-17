@@ -5,8 +5,6 @@ var FieldData = require('./../modelExt/extFieldData');
 
 //登录成功，重置session
 exports.init = function(req, res){
-    req.session.user = req.body.name;
-
     User.getOneByName(req.body.name, function (err, obj) {
         if (err){
             console.log(err);
@@ -35,12 +33,15 @@ exports.destroy = function(req, res, next){
 
 //session是否有效
 exports.validSession = function(req, res, next){
-    console.log("user:"+req.session.user);
     if(req.session.user) {
         var is_pass = false;
         var arr = req.path.split("/");
         console.log(arr);
         if(arr[1] == "home")
+            next();
+        else if(arr[1] == "gamedata")
+            next();
+        else
             next();
     }
     else
@@ -51,7 +52,7 @@ exports.validSession = function(req, res, next){
 };
 
 //session 数据
-exports.gamelist = function(req, res){
+exports.gameList = function(req, res){
     var games = [];
     for(var key in req.session.availablePath){
         if(!games.some(function(item){
@@ -64,3 +65,35 @@ exports.gamelist = function(req, res){
         res.json(func.formJsonMsg(1,{games: retMenus}));
     });
 };
+
+exports.itemList = function(req, res){
+    //session失效后会有server error
+    var games = [];
+    for(var i in req.session.availablePath){
+        var data_game = {game_id: i, menus:[]};
+
+        for(var j in req.session.availablePath[i]){
+            var data_menus = {menu_id: j, platforms: []};
+
+            req.session.availablePath[i][j].forEach(function(e){
+                var data_platform = {game_platform: e};
+                data_menus.platforms.push(data_platform);
+            });
+
+            FieldData.addInfo(data_menus.platforms,function(result){
+                data_menus.platforms = result;
+            });
+
+            data_game.menus.push(data_menus);
+        }
+
+        FieldData.addInfo(data_game.menus,function(result){
+            data_game.menus = result;
+        });
+        games.push(data_game);
+    }
+    FieldData.addInfo(games,function(result){
+        games = result;
+    });
+    res.json(func.formJsonMsg(1,{game: games}));
+}

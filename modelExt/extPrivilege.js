@@ -22,6 +22,16 @@ exports.getSomeByGameId = function(game_id, callback){
 	callback);
 };
 
+exports.getSomeByGameAndMenu = function(game_id, menu_id, callback){
+	var min_id = parseInt(game_id) * 100000;
+	var max_id = (parseInt(game_id) + 1) * 100000;
+	Privilege.find({
+		game_platform: {$gt: min_id,$lt: max_id},
+		menu_id: menu_id
+	},
+	callback);
+};
+
 exports.getSomeByGamePlatform = function(game_platform, callback){
 	Privilege.find({game_platform: game_platform},
 		callback);

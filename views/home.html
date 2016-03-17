@@ -47,11 +47,11 @@
         <!-- Main component for a primary marketing message or call to action -->
         <div class="jumbotron">
             <h3>{{ game.game_name }}</h3>
-            <p>关于{{game.game_name}}的游戏介绍</p>
+            <p>查看{{game.game_name}}数据</p>
             <p>
-                <a class="btn btn-lg btn-primary" href="/gameDetail/{{game.game_id}}" role="button">进入</a>
+                <a class="btn btn-lg btn-primary" id="game-{{game.game_id}}" href="/gamedata/{{game.game_id}}" role="button">进入</a>
             </p>
         </div>
     </div> <!-- /container -->
 </div>
-<script src="/js/game_list.js">
+<script src="/js/game-list.js">

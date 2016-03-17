@@ -24,5 +24,5 @@ var vm = new Vue({
                 this.$data.errmsg = response.data.info;
             });
         }
-    }
+}
 });

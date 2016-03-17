@@ -18,6 +18,10 @@ exports.toHomePage = function(req, res){
     res.render("home");
 };
 
+exports.toGamePage = function(req, res){
+    res.render("gamedata");
+};
+
 exports.toUserPage = function(req, res){
     var data = {myUser:[], otherUser:[], has_other: false};
     func.findUsersAndRolesByGameId(req.params.game_id, function(err, users){
@@ -31,7 +35,6 @@ exports.toUserPage = function(req, res){
                     data.has_other = true;
                 }
             }
-
             res.render('user',data);
         });
     });
@@ -64,38 +67,6 @@ exports.toRoleListPage = function(req, res){
     });
 };
 
-exports.toGamePage = function(req, res){
-    var data = {menu_list:[], game_list:[]};
-
-    //session失效后会有server error
-    for(var key in req.session.availablePath[req.params.game_id]){
-        data.menu_list.push({menu_id: key});
-    }
-
-    for(var key in req.session.availablePath){
-        if(req.params.game_id == key)
-            data.game_list.push({game_id: key,selected:"selected"});
-        else
-            data.game_list.push({game_id: key});
-    }
-
-    FieldData.addInfo(data.menu_list, function(result){
-        data.menu_list = result.map(function(item){
-            return {
-                menu_id : item.menu_id,
-                menu_title : item.menu_title,
-                menu_url : item.menu_url + "/" + req.params.game_id
-            };
-        });
-    });
-
-    FieldData.addInfo(data.game_list, function(result){
-        data.game_list = result;
-    });
-
-    res.render("gameDetail",data);
-};
-
 exports.toTest = function(req, res){
     res.render("test");
 };
@@ -108,6 +79,5 @@ exports.resetPrivileges = function(req, res){
 };
 
 exports.test = function(req, res){
-
     res.render("test");
 };

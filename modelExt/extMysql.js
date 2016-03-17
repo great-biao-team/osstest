@@ -10,31 +10,25 @@ exports.getOneByHostDb = function(host, database, callback){
 };
 
 exports.getOneByName = function(name, callback){
-    console.log("get one by name" + name);
     Mysql.findOne({name: name}, callback);
 };
 
-exports.add = function(host, user,charset, password, database, port, name, callback){
+exports.getOneByPlatformAndType = function(game_platform, type){
+    Mysql.findOne({game_platform: game_platform,type: type}, callback);
+};
+
+exports.add = function(host, user,charset, password, database, port, name,game_platform, type, callback){
     var mysql = new Mysql();
     mysql.host = host;
     mysql.user = user;
     mysql.database = database;
     mysql.name = name;
 
-    if(charset == null || charset == "")
-        mysql.charset = "UTF8_GENERAL_CI";
-    else
-        mysql.charset = charset;
-
-    if(password == null)
-        mysql.password = "";
-    else
-        mysql.password = password;
-
-    if(port == null)
-        mysql.port = 3306;
-    else
-        mysql.port = port;
+    mysql.charset = (charset ==null || charset == "") ?"UTF8_GENERAL_CI":charset;
+    mysql.password = (password == null)? "":password;
+    mysql.port = (port == null)? 3306:port;
+    mysql.game_platform =(game_platform == null)? 0 : game_platform;
+    mysql.type =(type == null || charset == "")? 0 : type;
 
     mysql.save(callback);
 };
